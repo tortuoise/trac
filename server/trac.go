@@ -6,6 +6,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/tortuoise/trac/pb"
+	"github.com/tortuoise/trac/data"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
@@ -20,6 +21,11 @@ func newTracServer() pb.TracServer {
 
 func (s *tracServer) Post(ctx context.Context, msg *pb.WrappedCoordinate) (*empty.Empty, error) {
 	glog.Infof("Post %v \n", msg)
+	id, err := data.PutCoordinate(&data.WrappedCoordinate{msg.User, msg.Id, int64(msg.Coord.Point.Latitude), int64(msg.Coord.Point.Longitude), int64(msg.Coord.Altitude)})
+	if err != nil {
+		glog.Infof("Failed to put to store:%s\n", err)
+	}
+        glog.Infof("Id: %v \n", id)
 	return &empty.Empty{}, nil
 }
 

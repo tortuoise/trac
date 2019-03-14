@@ -4,6 +4,7 @@ import (
 	sq "database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+        "github.com/golang/glog"
 	//"golang.gurusys.co.uk/go-framework/sql"
 	"time"
 )
@@ -40,6 +41,37 @@ func GetDB() (*DB, error) {
 		return nil, err
 	}
 	return dbcon, nil
+}
+
+type WrappedCoordinate struct {
+        UserId int64
+        Id int64
+        Latitude int64
+        Longitude int64
+        Altitude int64
+}
+
+func PutCoordinate(coord *WrappedCoordinate) (uint64, error) {
+        db, err := GetDB()
+        if err != nil {
+                glog.Error(err)
+                return 0, err
+        }
+        result, err := db.Exec("insert into coordinate (id, user_id, latitude, longitude, altitude) values ($1, $2, $3, $4, $5)", coord.Id, coord.UserId, coord.Latitude, coord.Longitude, coord.Altitude)
+        if err != nil {
+                glog.Error(err)
+                return 0 , err
+        }
+        rows, err := result.RowsAffected()
+                if rows != 1 {
+                        glog.Error("expected to affect 1 row, affected %d", rows)
+                        return uint64(rows) , err
+                }
+        return uint64(rows), nil
+}
+
+func GetCoordinate() (*WrappedCoordinate, error){
+        return nil, nil
 }
 
 type ChangeLog struct {

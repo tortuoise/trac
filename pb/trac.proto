@@ -57,14 +57,14 @@ service Trac {
 	rpc GetLast(CoordinateRequest) returns (Coordinate) {
 		option (google.api.http) = {
 			get: "/v1/trac/{user}"
-			additional_bindings {
+			/*additional_bindings {
 				get: "/v1/trac/{user}/{id}"
-			}
+			}*/
 		};
 	}
 	rpc Get(TrackRequest) returns (Track){ 
 		option (google.api.http) = {
-			get: "/v1/trac/{user}/{period.start}/{period.end}"
+			get: "/v1/trac/list/{user}"
 		};
 	};
 }
