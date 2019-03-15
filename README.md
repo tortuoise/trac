@@ -1,16 +1,14 @@
-## [Contents](#contents){#contents}
-    - [Brief](#brief)
-    - [Setup](#setup)
-    - [Build](#build)
-    - [Run](#run)
-    - [Usage](#usage)
-    - [Gotchas](#gotchas)
-    - [References](#references)
+## Contents
+- [Brief](#brief)
+- [Run](#run)
+- [Usage](#usage)
+- [Gotchas](#gotchas)
+- [References](#references)
 
-### [Brief](#brief){#brief}
+### [Brief](#brief)
 Trac server using gRPC gateway [1]. 
 
-### [Setup](#setup){#setup}
+### [Setup](#setup)
 
 Edit trac.proto
 
@@ -27,7 +25,7 @@ cd ./pb
 
 ```
 
-### [Build](#build){#build}
+### [Build](#build)
 
 Build using:
 ```
@@ -37,7 +35,7 @@ cd cmd-gateway
 go build
 ```
 
-### [Run](#run){#run}
+### [Run](#run)
 Run using:
 ```
 ./run.sh --OR--
@@ -46,14 +44,14 @@ Run using:
 ```
 Starts gRPC server on 9090 and http gateway on 8080. 
 
-### [Usage](#usage){#usage} 
+### [Usage](#usage)
 
 Post request using 
 ```
 curl -d '{"user":12, "coord":{"altitude":32, "point":{"latitude":32, "longitude":33}}, "timestamp_value": "2012-02-03T14:14:14Z"}' localhost:8080/v1/trac
 ```
 
-### [Gotchas](#gotchas){#gotchas}
+### [Gotchas](#gotchas)
 
 Must provide URL containing timestamps in double quotes to curl otherwise parsing error:
 ```
@@ -61,7 +59,7 @@ curl "localhost:8080/v1/trac/list/15?period.start=2012-03-02T12:00:00Z&period.en
 curl localhost:8080/v1/trac/list/15?&track=12sr // no double quotes reqd.
 ```
 
-### [References](#references){#references}
+### [References](#references)
 + [grpc-gateway](https://github.com/grpc-ecosystem/grpc-gateway)
 + [Funnel](https://github.com/agnivade/funnel)
 + [Annotations](https://github.com/google/go-genproto/blob/master/googleapis/api/annotations/http.pb.go)
