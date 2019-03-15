@@ -21,7 +21,7 @@ func newTracServer() pb.TracServer {
 
 func (s *tracServer) Post(ctx context.Context, msg *pb.WrappedCoordinate) (*empty.Empty, error) {
 	glog.Infof("Post %v \n", msg)
-	id, err := data.PutCoordinate(&data.WrappedCoordinate{msg.User, msg.Id, int64(msg.Coord.Point.Latitude), int64(msg.Coord.Point.Longitude), int64(msg.Coord.Altitude)})
+	id, err := data.PutCoordinate(&data.WrappedCoordinate{UserId:msg.User, Latitude:(msg.Coord.Point.Latitude), Longitude:(msg.Coord.Point.Longitude), Altitude:(msg.Coord.Altitude), Timestamp: msg.TimestampValue.String()})
 	if err != nil {
 		glog.Infof("Failed to put to store:%s\n", err)
 	}
@@ -39,10 +39,25 @@ func (s *tracServer) GetLast(ctx context.Context, msg *pb.CoordinateRequest) (*p
 		"foo": "foo2",
 		"bar": "bar2",
 	}))
-	return &pb.Coordinate{}, nil
+        c, err := data.GetCoordinate(msg.User)
+        if err != nil {
+                glog.Errorf("GetLast %v \n", err)
+                return nil, err
+        }
+	return &pb.Coordinate{c.Altitude, &pb.Point{c.Latitude,c.Longitude}}, nil
 }
 
 func (s *tracServer) Get(ctx context.Context, msg *pb.TrackRequest) (*pb.Track, error) {
 	glog.Infof("Get %v \n", msg)
-	return &pb.Track{}, nil
+        cs, err := data.GetTrack(msg.User)
+        if err != nil {
+                glog.Errorf("Get %v \n", err)
+                return nil, err
+        }
+        // convert []*data.Coordinate to []*pb.Coordinate
+        coords := make([]*pb.Coordinate,0)
+        for _, c := range cs {
+                coords = append(coords, &pb.Coordinate{c.Altitude, &pb.Point{c.Latitude, c.Longitude}})
+        }
+	return &pb.Track{Coords:coords}, nil
 }

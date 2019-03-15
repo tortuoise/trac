@@ -43,12 +43,19 @@ func GetDB() (*DB, error) {
 	return dbcon, nil
 }
 
+type Coordinate struct {
+        Latitude int32
+        Longitude int32
+        Altitude int32
+}
+
 type WrappedCoordinate struct {
         UserId int64
         Id int64
-        Latitude int64
-        Longitude int64
-        Altitude int64
+        Latitude int32
+        Longitude int32
+        Altitude int32
+        Timestamp string
 }
 
 func PutCoordinate(coord *WrappedCoordinate) (uint64, error) {
@@ -57,7 +64,8 @@ func PutCoordinate(coord *WrappedCoordinate) (uint64, error) {
                 glog.Error(err)
                 return 0, err
         }
-        result, err := db.Exec("insert into coordinate (id, user_id, latitude, longitude, altitude) values ($1, $2, $3, $4, $5)", coord.Id, coord.UserId, coord.Latitude, coord.Longitude, coord.Altitude)
+        //result, err := db.Exec("insert into coordinate (user_id, latitude, longitude, altitude, created_at) values ($1, $2, $3, $4, $5)", coord.UserId, coord.Latitude, coord.Longitude, coord.Altitude, coord.Timestamp)
+        result, err := db.Exec("insert into coordinate (user_id, latitude, longitude, altitude) values ($1, $2, $3, $4)", coord.UserId, coord.Latitude, coord.Longitude, coord.Altitude)
         if err != nil {
                 glog.Error(err)
                 return 0 , err
@@ -70,8 +78,58 @@ func PutCoordinate(coord *WrappedCoordinate) (uint64, error) {
         return uint64(rows), nil
 }
 
-func GetCoordinate() (*WrappedCoordinate, error){
-        return nil, nil
+func GetCoordinate(userid int64) (*WrappedCoordinate, error){
+
+        db, err := GetDB()
+        if err != nil {
+                glog.Error(err)
+                return nil, err
+        }
+        rows, err := db.Query("select id, latitude, longitude, altitude from coordinate where user_id=$1", userid)
+        if err != nil {
+                glog.Errorf("data.GetCoordinate %v \n", err)
+                return nil, err
+        }
+        defer rows.Close()
+        if !rows.Next() {
+                glog.Errorf("data.GetCoordinate %v \n", err)
+                return nil, fmt.Errorf("No data for user: %d \n", userid)
+        }
+        wc := &WrappedCoordinate{UserId: userid}
+        err = rows.Scan(&wc.Id, &wc.Latitude, &wc.Longitude, &wc.Altitude)
+        if err != nil {
+                glog.Errorf("data.GetCoordinate %v \n", err)
+                return nil, err
+        }
+        return wc, nil
+}
+
+func GetTrack(userid int64) ([]*Coordinate, error){
+        cs := make([]*Coordinate, 0)
+        db, err := GetDB()
+        if err != nil {
+                glog.Error(err)
+                return cs, err
+        }
+        rows, err := db.Query("select latitude, longitude, altitude from coordinate where user_id=$1", userid)
+        if err != nil {
+                glog.Errorf("data.GetCoordinate %v \n", err)
+                return cs, err
+        }
+        defer rows.Close()
+        if !rows.Next() {
+                glog.Errorf("data.GetCoordinate %v \n", err)
+                return cs, fmt.Errorf("No data for user: %d \n", userid)
+        }
+        for rows.Next() {
+                c := &Coordinate{}
+                if err := rows.Scan(&c.Latitude, &c.Longitude, &c.Altitude); err != nil {
+                        glog.Errorf("data.GetCoordinate %v \n", err)
+                        return cs, fmt.Errorf("No data for user: %d \n", userid)
+                }
+                cs = append(cs, c)
+        }
+        return cs, nil
 }
 
 type ChangeLog struct {

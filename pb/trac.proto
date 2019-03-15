@@ -37,7 +37,10 @@ message Track {
 
 message TrackRequest {
 	int64 user = 1;
+	//oneof trackfilter {
 	TimePeriod period = 2;
+	string track = 3;
+	//}
 }
 
 message WrappedCoordinate {
@@ -45,6 +48,7 @@ message WrappedCoordinate {
 	int64 id = 2; // mapped to url in post
 	Coordinate coord = 3; // mapped to body in post
 	google.protobuf.Timestamp timestamp_value = 4;
+	string track = 5;
 }
 
 service Trac {

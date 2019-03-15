@@ -12,7 +12,9 @@ CREATE TABLE IF NOT EXISTS coordinate (
 	latitude REAL NOT NULL,
 	longitude REAL NOT NULL,
 	altitude REAL NOT NULL,
-	created_at TIMESTAMPTZ NOT NULL default current_timestamp
+	created_at TIMESTAMPTZ NOT NULL default current_timestamp,
+	track VARCHAR(16)
 );
 
 CREATE INDEX coord_user_index ON coordinate(user_id);
+CREATE INDEX coord_index ON coordinate(id);
