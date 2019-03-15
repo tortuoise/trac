@@ -1,21 +1,50 @@
-Title: trac
-Category: readme
-Tags: software, go, grpc, postgres 
-Date: 21st March 2018
-Format: markdown
-
 ## [Contents](#contents){#contents}
     - [Brief](#brief)
-    - [Components](#components)
-        - [Hardware](#hardware)
-        - [Software](#software)
-    - [Theory](#theory)
+    - [Setup](#setup)
+    - [Build](#build)
+    - [Run](#run)
+    - [Usage](#usage)
     - [Gotchas](#gotchas)
     - [References](#references)
 
 ### [Brief](#brief){#brief}
+Trac server using gRPC gateway [1]. 
 
-### [Components](#components){#components}
+### [Setup](#setup){#setup}
+
+Edit trac.proto
+
+Generate trac.pb.go
+```
+cd ./pb
+./protoc.sh
+```
+
+Generate trac.pb.gw.go
+```
+cd ./pb
+./gw.sh 
+
+```
+
+### [Build](#build){#build}
+
+Build using:
+```
+cd cmd-server
+go build
+cd cmd-gateway
+go build
+```
+
+### [Run](#run){#run}
+Run using:
+```
+./run.sh --OR--
+./cmd-server/cmd-server -stderrthreshold=INFO -dbdb=m0v -dbuser=sridhar -dbpw=rcsp8 &
+./cmd-gateway/cmd-gateway -stderrthreshold=INFO &
+```
+Starts gRPC server on 9090 and http gateway on 8080. 
 
 ### [Usage](#usage){#usage} 
 
@@ -23,8 +52,6 @@ Post request using
 ```
 curl -d '{"user":12, "coord":{"altitude":32, "point":{"latitude":32, "longitude":33}}, "timestamp_value": "2012-02-03T14:14:14Z"}' localhost:8080/v1/trac
 ```
-
-
 
 ### [Gotchas](#gotchas){#gotchas}
 
