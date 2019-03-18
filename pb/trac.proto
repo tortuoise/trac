@@ -1,11 +1,11 @@
 syntax = "proto3";
 option go_package = "pb";
-package github.com.tortuoise.trac.pb;
+package trac;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-
+//import "routeguide/route_guide.proto";
 
 message TimePeriod {
 	google.protobuf.Timestamp start =1;

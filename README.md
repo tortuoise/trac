@@ -1,5 +1,6 @@
 ## Contents
 - [Brief](#brief)
+- [Setup](#setup)
 - [Run](#run)
 - [Usage](#usage)
 - [Gotchas](#gotchas)

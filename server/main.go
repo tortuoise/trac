@@ -25,6 +25,7 @@ func Run(ctx context.Context, network, address string) error {
 
 	s := grpc.NewServer()
 	pb.RegisterTracServer(s, newTracServer())
+	//pb.RegisterRouteGuideServer(s, newServer())
 
         reflection.Register(s)
 
