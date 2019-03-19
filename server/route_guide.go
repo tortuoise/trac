@@ -24,7 +24,7 @@
 // It implements the route guide service whose definition can be found in routeguide/route_guide.proto.
 package server
 
-/*import (
+import (
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -32,19 +32,19 @@ package server
 	"io/ioutil"
 	"log"
 	"math"
-	"net"
+	//"net"
 	"sync"
 	"time"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/testdata"
+	//"google.golang.org/grpc/credentials"
+	//"google.golang.org/grpc/testdata"
 
 	"github.com/golang/protobuf/proto"
 
-	rg "github.com/tortuoise/trac/pb"
+	rg "github.com/tortuoise/trac/pb/routeguide"
 )
 
 var (
@@ -212,7 +212,7 @@ func newServer() *routeGuideServer {
 	s := &routeGuideServer{routeNotes: make(map[string][]*rg.RouteNote)}
 	s.loadFeatures(*jsonDBFile)
 	return s
-}*/
+}
 
 /*func main() {
 		log.Fatalf("failed to listen: %v", err)
@@ -239,7 +239,7 @@ func newServer() *routeGuideServer {
 	grpcServer.Serve(lis)
 }*/
 
-/*
+
 func AuthUnaryServerInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 
         fmt.Printf("Intercepting unary: %s \n", info.FullMethod)
@@ -266,4 +266,4 @@ func AuthStreamServerInterceptor(req interface{}, ss grpc.ServerStream, info *gr
                 fmt.Printf("Error chan %v \n", time.Now())
         }
         return
-}*/
+}

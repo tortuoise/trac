@@ -1,0 +1,204 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "trac.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/trac": {
+      "post": {
+        "operationId": "Post",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "properties": {}
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCoordinate"
+            }
+          }
+        ],
+        "tags": [
+          "Trac"
+        ]
+      }
+    },
+    "/v1/trac/{user}": {
+      "get": {
+        "operationId": "GetLast",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCoordinate"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Trac"
+        ]
+      }
+    },
+    "/v1/trac/{user}/{id}": {
+      "get": {
+        "operationId": "GetLast2",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCoordinate"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "Trac"
+        ]
+      }
+    },
+    "/v1/trac/{user}/{period.start}/{period.end}": {
+      "get": {
+        "operationId": "Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTrack"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "period.start",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "period.end",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Trac"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "pbCoordinate": {
+      "type": "object",
+      "properties": {
+        "altitude": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "point": {
+          "$ref": "#/definitions/pbPoint"
+        }
+      }
+    },
+    "pbPoint": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "longitude": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "Points are represented as latitude-longitude pairs in the E7 representation\n(degrees multiplied by 10**7 and rounded to the nearest integer).\nLatitudes should be in the range +/- 90 degrees and longitude should be in\nthe range +/- 180 degrees (inclusive)."
+    },
+    "pbTimePeriod": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbTrack": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "coords": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbCoordinate"
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@ package trac;
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-//import "routeguide/route_guide.proto";
+import "routeguide/routeguide.proto";
 
 message TimePeriod {
 	google.protobuf.Timestamp start =1;
@@ -15,14 +15,14 @@ message TimePeriod {
 // (degrees multiplied by 10**7 and rounded to the nearest integer).
 // Latitudes should be in the range +/- 90 degrees and longitude should be in
 // the range +/- 180 degrees (inclusive).
-message Point {
-	int32 latitude = 1;
-	int32 longitude = 2;
-}
+//message Point {
+//	int32 latitude = 1;
+//	int32 longitude = 2;
+//}
 
 message Coordinate {
 	int32 altitude = 1;
-	Point point = 2;
+	routeguide.Point point = 2;
 }
 
 message CoordinateRequest {

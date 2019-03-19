@@ -1,6 +1,6 @@
 #!/bin/sh
-#   protoc -I. \
-#     --go_out=plugins=grpc:. route_guide.proto
+   protoc -I. \
+     --go_out=plugins=grpc:. routeguide/routeguide.proto
 
    protoc -I$PROTOCPATH/include -I. \
      -I$GOPATH/src \

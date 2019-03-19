@@ -6,6 +6,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/tortuoise/trac/pb"
+	rg "github.com/tortuoise/trac/pb/routeguide"
 	"github.com/tortuoise/trac/data"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
@@ -44,7 +45,7 @@ func (s *tracServer) GetLast(ctx context.Context, msg *pb.CoordinateRequest) (*p
                 glog.Errorf("GetLast %v \n", err)
                 return nil, err
         }
-	return &pb.Coordinate{c.Altitude, &pb.Point{c.Latitude,c.Longitude}}, nil
+	return &pb.Coordinate{c.Altitude, &rg.Point{c.Latitude,c.Longitude}}, nil
 }
 
 func (s *tracServer) Get(ctx context.Context, msg *pb.TrackRequest) (*pb.Track, error) {
@@ -57,7 +58,7 @@ func (s *tracServer) Get(ctx context.Context, msg *pb.TrackRequest) (*pb.Track, 
         // convert []*data.Coordinate to []*pb.Coordinate
         coords := make([]*pb.Coordinate,0)
         for _, c := range cs {
-                coords = append(coords, &pb.Coordinate{c.Altitude, &pb.Point{c.Latitude, c.Longitude}})
+                coords = append(coords, &pb.Coordinate{c.Altitude, &rg.Point{c.Latitude, c.Longitude}})
         }
 	return &pb.Track{Coords:coords}, nil
 }

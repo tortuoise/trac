@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang/glog"
 	"github.com/tortuoise/trac/pb"
+	rg "github.com/tortuoise/trac/pb/routeguide"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -25,7 +26,7 @@ func Run(ctx context.Context, network, address string) error {
 
 	s := grpc.NewServer()
 	pb.RegisterTracServer(s, newTracServer())
-	//pb.RegisterRouteGuideServer(s, newServer())
+	rg.RegisterRouteGuideServer(s, newServer())
 
         reflection.Register(s)
 
