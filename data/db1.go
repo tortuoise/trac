@@ -46,7 +46,7 @@ func GetDB() (*DB, error) {
 type Coordinate struct {
         Latitude int32
         Longitude int32
-        Altitude int32
+        Altitude float32
 }
 
 type WrappedCoordinate struct {
@@ -54,7 +54,7 @@ type WrappedCoordinate struct {
         Id int64
         Latitude int32
         Longitude int32
-        Altitude int32
+        Altitude float32
         Timestamp string
 }
 
@@ -85,7 +85,7 @@ func GetCoordinate(userid int64) (*WrappedCoordinate, error){
                 glog.Error(err)
                 return nil, err
         }
-        rows, err := db.Query("select id, latitude, longitude, altitude from coordinate where user_id=$1", userid)
+        rows, err := db.Query("select id, latitude, longitude, altitude from coordinate where user_id=$1 order by created_at desc limit 1", userid)
         if err != nil {
                 glog.Errorf("data.GetCoordinate %v \n", err)
                 return nil, err

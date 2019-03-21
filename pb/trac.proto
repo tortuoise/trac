@@ -1,5 +1,11 @@
 syntax = "proto3";
+
 option go_package = "pb";
+option java_multiple_files = true;
+option java_package = "io.grpc.routeguideexample";
+option java_outer_classname = "TracProto";
+option objc_class_prefix = "RTG";
+
 package trac;
 
 import "google/api/annotations.proto";
@@ -21,7 +27,7 @@ message TimePeriod {
 //}
 
 message Coordinate {
-	int32 altitude = 1;
+	float altitude = 1;
 	routeguide.Point point = 2;
 }
 

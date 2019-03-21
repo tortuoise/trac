@@ -18,7 +18,7 @@ Generate trac.pb.go (and routeguide/routeguide.pb.go)
 cd ./pb
 ./protoc.sh
 ```
-TODO: currently routeguide.pb.go gets saved to a ./github.com/tortuoise/trac/routeguide because that's what the `option go_package` is set. So that file has to be copied over to ./routeguide (where routeguide.proto resides) so that it can be picked up by the go module `pb`. Need to figure out a way to do this better. 
+TODO: currently routeguide.pb.go gets saved to a ./github.com/tortuoise/trac/routeguide because that's what the `option go_package` is set. So that file has to be copied over to ./routeguide (where routeguide.proto resides) so that it can be picked up by the go module `pb`. Need to figure out a way to do this better - the idea is to have multiple services share the grpc.Server. In this case `trac` imports `Point` from `routeguide`. 
 
 Generate trac.pb.gw.go
 ```
